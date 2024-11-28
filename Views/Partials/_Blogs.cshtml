@@ -1,0 +1,28 @@
+﻿@inherits UmbracoViewPage
+@{
+    var selection = Umbraco.ContentAtRoot().FirstOrDefault()
+    .ChildrenOfType("blog");
+    //.Where(x => x.IsVisible());
+}
+<div class="col-md-10 col-lg-8 col-xl-7">
+    <!-- Post preview-->
+    @foreach (var item in selection)
+    {
+        <div class="post-preview">
+            <a href="@item.Url()">
+                <h2 class="post-title">@item.Value("headerTitle")</h2>
+                <h3 class="post-subtitle">@item.Value("headerTitle")</h3>
+            </a>
+            <p class="post-meta">
+                Posted by
+                <a href="#!" style="text-transform:capetalize">@item.Value("postedBy")</a>
+                on @string.Format("{0:MMMM dd, yyyy}", (DateTime)item.Value("postedDate"))
+            </p>
+        </div>
+        <!-- Divider-->
+        <hr class="my-4" />
+    }
+    <!-- Pager-->
+    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts
+            →</a></div>
+</div>

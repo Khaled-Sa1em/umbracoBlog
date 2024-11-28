@@ -1,0 +1,82 @@
+﻿@inherits UmbracoViewPage
+
+@{
+    var homePage = Umbraco.AssignedContentItem.AncestorOrSelf<HomePage>();
+    //var children = homePage?.Children?.Where(p => p.IsVisible()) ?? Enumerable.Empty<IPublishedContent>();
+    // <li class="nav-item">
+    // <a class="nav-link px-lg-3 py-3 py-lg-4" href="/">Home</a>
+    // </li>
+    // <!--<a class="nav-link px-lg-3 py-3 py-lg-4" href="@item.Url()">@item.Name</a>-->
+
+    /*
+
+    var children = homePage?.Links;
+    @if (children != null && children.Any())
+    {
+    foreach (var item in children)
+    {
+    <li class="nav-item">
+    <a class="nav-link px-lg-3 py-3 py-lg-4" href="@item.Url" target="@item.Target">@item.Name</a>
+    </li>
+    }
+    }
+    */
+
+    var mainNavigation = homePage.MainNavigationLinks;
+
+    string siteLogo = (string)Model?.Value("siteLogo") ?? "";
+    if (string.IsNullOrWhiteSpace(siteLogo)) siteLogo = "Umbraco";
+}
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="/">@siteLogo</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto py-4 py-lg-0">
+
+                @if (mainNavigation != null && mainNavigation.Any())
+                {
+                    var dropdownId = 0;
+                    foreach (var item in mainNavigation)
+                    {
+                        var hasChildLinks = item.ChildLinks != null && item.ChildLinks.Any();
+                        if (!hasChildLinks)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link px-lg-3 py-3 py-lg-4" href="@item.Link.Url"
+                                    target="@item.Link.Target">@item.Title</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item dropdown" data-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link px-lg-3 py-3 py-lg-4 dropdown-toggle" id="navbarDropdown@(dropdownId)"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false" href="#">
+                                    @item.Title
+                                </a>
+                                <ul class="dropdown-menu border-0" aria-labelledby="navbarDropdown@(dropdownId)">
+                                    @foreach (var child in item.ChildLinks)
+                                    {
+                                        <li>
+                                            <a class=" dropdown-item" href="@child.Url" target="@child.Target">
+                                                @child.Name
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li> 
+                        }
+                        dropdownId++;
+                    }
+                }
+
+
+            </ul>
+        </div>
+    </div>
+</nav>
