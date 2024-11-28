@@ -1,7 +1,15 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+﻿@inherits UmbracoViewPage<ContentPage>
 @{
 	Layout = "_layout.cshtml";
 }
-
-@Model.BodyText
+<div class="mb-4">
+	<div class="container px-4 px-lg-5">
+		@Model.BodyText
+	</div>
+</div>
+<hr>
+<div class="mb-4">
+	<div class="container px-4 px-lg-5">
+		@Html.GetBlockListHtml(Model.BlockListContent)
+	</div>
+</div>
